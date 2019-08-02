@@ -62,7 +62,7 @@ module.exports = {
 
   //TODO::
   router: {
-    middleware: ['auth']
+    // middleware: ['auth']
   },
 
   /*

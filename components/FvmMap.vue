@@ -36,6 +36,10 @@
                 default: function() {
                     return 18
                 }
+            },
+            getNeighbours: {
+                type: Boolean,
+                default: true
             }
         },
 
@@ -44,14 +48,14 @@
                 handler(val) {
                     map.setZoom(val);
                     this.zoomLevel = val;
-                    if (this.zoomLevel >= this.neighboursTriggerLevel) {
+                    if (this.getNeighbours && this.zoomLevel >= this.neighboursTriggerLevel) {
                         this.fetch();
                     }
                 }
             },
             center: {
                 handler(val) {
-                    if (this.zoomLevel >= this.neighboursTriggerLevel) {
+                    if (this.getNeighbours && this.zoomLevel >= this.neighboursTriggerLevel) {
                         this.fetch();
                     }
                 }
@@ -187,7 +191,7 @@
 
             this.clearNeighbour();
 
-            if (this.zoomLevel >= this.neighboursTriggerLevel) {
+            if (this.getNeighbours && this.zoomLevel >= this.neighboursTriggerLevel) {
                 this.fetch();
             }
         }
