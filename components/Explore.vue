@@ -10,14 +10,14 @@
 
 
       <flex-row class="flex-wrap">
-        <dashboard-icon title="Food" icon="cutlery" bg-color="bg-blue-light shadow-food" icon-color="text-white"></dashboard-icon>
-        <dashboard-icon title="Attractions" icon="attraction" bg-color="bg-orange-light shadow-attraction" icon-color="text-white"></dashboard-icon>
-        <dashboard-icon title="Shops" icon="shop" bg-color="bg-red-500 shadow-shop" icon-color="text-white"></dashboard-icon>
-        <dashboard-icon title="Mosques" icon="mosque" bg-color="bg-green-light shadow-masjid" icon-color="text-white"></dashboard-icon>
-        <dashboard-icon title="Stay" icon="accommodation" bg-color="bg-green-mid shadow-stay" icon-color="text-white"></dashboard-icon>
-        <dashboard-icon title="Services" icon="telephone" bg-color="bg-pink-light shadow-service" icon-color="text-white"></dashboard-icon>
-        <dashboard-icon title="Maps" icon="direction" bg-color="bg-purple-600 shadow-map" icon-color="text-white"></dashboard-icon>
-        <dashboard-icon title="Add Place" icon="marker" bg-color="bg-gray-400 shadow-place" icon-color="text-white"></dashboard-icon>
+        <dashboard-icon title="Food" id="foods" icon="cutlery" bg-color="bg-blue-light shadow-food" icon-color="text-white"></dashboard-icon>
+        <dashboard-icon title="Attractions" id="attractions" icon="attraction" bg-color="bg-orange-light shadow-attraction" icon-color="text-white"></dashboard-icon>
+        <dashboard-icon title="Shops" id="shops" icon="shop" bg-color="bg-red-500 shadow-shop" icon-color="text-white"></dashboard-icon>
+        <dashboard-icon title="Mosques" id="mosques" icon="mosque" bg-color="bg-green-light shadow-masjid" icon-color="text-white"></dashboard-icon>
+        <dashboard-icon title="Stay" id="stay" icon="accommodation" bg-color="bg-green-mid shadow-stay" icon-color="text-white"></dashboard-icon>
+        <dashboard-icon title="Services" id="services" icon="telephone" bg-color="bg-pink-light shadow-service" icon-color="text-white"></dashboard-icon>
+        <dashboard-icon title="Maps" id="maps" icon="direction" bg-color="bg-purple-600 shadow-map" icon-color="text-white"></dashboard-icon>
+        <dashboard-icon title="Add Place" id="add-place" icon="marker" bg-color="bg-gray-400 shadow-place" icon-color="text-white" @add-place="$emit('add-place')"></dashboard-icon>
       </flex-row>
 
       <div class="mt-12">
