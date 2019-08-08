@@ -31,7 +31,12 @@
     methods: {
       getResource() {
         if (this.id === 'add-place') {
-          this.$emit('add-place')
+            this.$emit('add-place');
+          //   if (this.$auth.loggedIn) {
+          // } else {
+          //     // this.$auth.loginWith('laravel.passport')
+          //   this.$router.push('/login');
+          // }
         } else {
           alert(this.id)
         }
