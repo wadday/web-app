@@ -12,10 +12,10 @@
     <div class="fixed top-0 left-0  w-full bg-dim h-full" v-if="searching" @click="searching = false"></div>
 
     <button class="absolute mr-3 mt-3 right-0 top-0 rounded-full shadow-fvm" @click="dashboard = true" v-if="!searching && !editing">
-      <icon icon="android-menu" class="h-6 text-gray-600"></icon>
+      <icon icon="menu" class="h-6 text-gray-600"></icon>
     </button>
 
-    <div class="absolute left-0 top-0 w-full p-3 bg-dim flex justify-between text-white items-center" v-if="editing">
+    <div class="fixed left-0 top-0 w-full p-2 bg-dim flex justify-between text-white items-center" v-if="editing">
       <button class="rounded-full" @click="exitEditMode">
         <icon icon="back" class="h-6 text-white"></icon>
       </button>
