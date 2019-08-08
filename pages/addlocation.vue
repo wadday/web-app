@@ -8,8 +8,9 @@
 
     import FvmMap from "../components/FvmMap";
     export default {
-        middleware: 'guest',
+        middleware: ['auth'],
         name: 'AddLocation',
         components: {FvmMap},
+
     }
 </script>
