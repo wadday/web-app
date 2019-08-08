@@ -2,6 +2,18 @@
     <div class="w-full h-full">
         <div id="map" class="w-full h-full"></div>
 
+        <div style="display:none">
+            <div id="map-type-control" class="absolute right-0">
+
+                <button id="maptype-control-map"  class="absolute mr-3 mt-12 right-0 top-0 rounded-full active-map-type">
+                    <icon icon="map" class="h-5 text-gray-600"></icon>
+                </button>
+
+                <button id="maptype-control-satellite"  class="absolute mr-3 mt-20 right-0 top-0 rounded-full">
+                    <icon icon="earth" class="h-6 text-gray-600"></icon>
+                </button>
+            </div>
+        </div>
         <info-window v-if="edit_info" :position="current_marker"></info-window>
     </div>
 </template>
@@ -9,11 +21,12 @@
 <script>
     import debounce from 'lodash.debounce';
     import InfoWindow from "./map/InfoWindow";
+    import Icon from "./Icon";
     let map;
     let purple_icon =  'http://maps.google.com/mapfiles/ms/icons/purple-dot.png' ;
     export default {
         name: 'FvmMap',
-        components: {InfoWindow},
+        components: {Icon, InfoWindow},
         props: {
             latitude: {
                 type: Number,
@@ -174,12 +187,30 @@
                     id: 'marker_'+markerId
                 });
                 marker.addListener('click', function() {
-                    _this.infoWindow(marker);
+                    // _this.infoWindow(marker);
                     _this.edit_info = true;
                 });
                 this.$emit('pin-dropped')
             },
-            infoWindow(marker) {
+            initMapTypeControl() {
+                let mapTypeControlDiv = document.getElementById('map-type-control');
+                let mapDiv = document.getElementById('maptype-control-map');
+                let sateLiveDiv = document.getElementById('maptype-control-satellite');
+                mapDiv.onclick = function() {
+                    mapDiv.classList.add('active-map-type');
+                    sateLiveDiv.classList.remove('active-map-type');
+                    map.setMapTypeId('fvm_map');
+                };
+                sateLiveDiv.onclick = function() {
+                  mapDiv.classList.remove('active-map-type');
+                  sateLiveDiv.classList.add('active-map-type');
+                  map.setMapTypeId('hybrid');
+                };
+
+                map.controls[google.maps.ControlPosition.LEFT_TOP].push(
+                  mapTypeControlDiv);
+            },
+            // infoWindow(marker) {
                 // let contentString = '<div id="content" class="p-2">'+
                 //   '<div id="siteNotice">'+
                 //   '</div>'+
@@ -205,7 +236,7 @@
                 //     content: contentString
                 // });
                 // infowindow.open(map, marker);
-            },
+            // },
             initMap() {
                 /**
                  * @type {google.maps.Map}
@@ -246,9 +277,15 @@
                 });
 
                 google.maps.event.addListener(map, 'click', function(e) {
-                    self.addLocation(e);
+                    if (self.editing && self.zoomLevel >= 18) {
+                        self.addLocation(e);
+                    } else {
+                        // alert('Zoom in')
+                        // self.$toast.open('Zoom in')
+                    }
                 });
 
+                self.initMapTypeControl();
 
                 // infoWindow = new google.maps.InfoWindow;
 
@@ -285,3 +322,10 @@
         }
     }
 </script>
+
+<style scoped>
+    .active-map-type svg {
+        color: #ffffff;
+    }
+
+</style>
