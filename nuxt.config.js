@@ -30,7 +30,9 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [],
+  plugins: [
+      '~/plugins/tags.js'
+  ],
   /*
   ** Nuxt.js modules
   */

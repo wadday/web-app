@@ -1,5 +1,7 @@
 <template>
-  <div>test protected route</div>
+  <div>test protected route
+    <button @click="fetch"></button>
+  </div>
 </template>
 
 <script>
@@ -9,6 +11,16 @@
 
         mounted() {
             console.log(this.$auth.user)
+        },
+
+        methods: {
+            fetch() {
+                this.$axios.$get('/api/locations?keyword=veem')
+                    .then(result => {
+                    console.log(result)
+                })
+                    .catch(error => {})
+            }
         }
     }
 </script>

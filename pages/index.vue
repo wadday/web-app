@@ -2,19 +2,34 @@
 
   <div class="w-screen h-screen">
 <!--        <div id="map" class="w-full h-full"></div>-->
-    <fvm-map></fvm-map>
+    <fvm-map
+      :zoom="zoom"
+      @zoomed="zoomed"
+      :editing="editing"
+      @pin-dropped="pinDropped"
+    ></fvm-map>
 
     <div class="fixed top-0 left-0  w-full bg-dim h-full" v-if="searching" @click="searching = false"></div>
 
-    <button class="absolute mr-3 mt-3 right-0 top-0 rounded-full shadow-fvm" @click="dashboard = true" v-if="!searching">
-      <icon icon="android-menu" class="h-6 text-gray-600"></icon>
+    <button class="absolute mr-3 mt-3 right-0 top-0 rounded-full shadow-fvm" @click="dashboard = true" v-if="!searching && !editing">
+      <icon icon="menu" class="h-6 text-gray-600"></icon>
     </button>
-    <explore v-show="dashboard" @close="close"></explore>
+
+    <div class="fixed left-0 top-0 w-full p-2 bg-dim flex justify-between text-white items-center" v-if="editing">
+      <button class="rounded-full" @click="exitEditMode">
+        <icon icon="back" class="h-6 text-white"></icon>
+      </button>
+      <small v-if="editing && zoom < 18">Zoom in</small>
+      <small v-else-if="editing && zoom >= 18 && !droppdPin">Tap to add</small>
+      <small v-else-if="editing && droppdPin">Tap Marker to add details</small>
+    </div>
+
+    <explore v-show="dashboard" @close="close" @add-place="addPlace"></explore>
 
     <search-result v-if="searching" :typing="userTyping" :results="results"></search-result>
     <div class="absolute top-0 left-0 w-screen h-screen pointer-events-none">
       <div class="absolute bottom-0 flex w-full">
-        <search-bar @blur="blur" @typing="typing" @results="searchResult"></search-bar>
+        <search-bar @blur="blur" @typing="typing" @results="searchResult" v-if="!editing"></search-bar>
       </div>
     </div>
 
@@ -34,10 +49,13 @@ export default {
 
   data() {
     return {
+      zoom: 15,
+      droppdPin: false,
       dashboard: true,
       searching: false,
       userTyping: false,
-      results: []
+      results: [],
+      editing: false
     }
   },
   // mounted() {
@@ -67,6 +85,24 @@ export default {
     close() {
       this.dashboard = false;
     },
+
+    addPlace() {
+        this.dashboard = false;
+        this.editing = true
+    },
+
+    exitEditMode() {
+      this.dashboard = true;
+      this.editing = false;
+    },
+
+    zoomed(zoom) {
+      this.zoom = zoom;
+    },
+
+    pinDropped() {
+     this.droppdPin = true
+    }
     // initMap: () => {
     //   /**
     //    * @type {google.maps.Map}
