@@ -4,9 +4,14 @@
       <div class="bg-white w-full rounded shadow-md">
         <div class="flex justify-between rounded shadow-md rounded-b-none items-center w-full bg-gray-100 text-gray-800 px-5 py-2">
           <h2 class="text-xl">Add Place</h2>
-          <button class="rounded-full p-2" @click="saveLocation" :disabled="isValid  !== 0">
-            <icon icon="paper-plane" class="h-6" :class="{'text-gray-200': isValid !== 0, 'text-blue-light': isValid === 0}"></icon>
-          </button>
+          <div>
+            <button class="rounded-full p-2" @click="saveLocation" :disabled="isValid  !== 0">
+              <icon icon="paper-plane" class="h-6" :class="{'text-gray-200': isValid !== 0, 'text-blue-light': isValid === 0}"></icon>
+            </button>
+            <button class="rounded-full p-2" @click="$emit('close')">
+              <icon icon="close" class="h-6 text-red-500"></icon>
+            </button>
+          </div>
         </div>
         <div class="px-6 py-8 text-black overflow-auto" style="max-height: calc(100vh - 150px);">
           <input
@@ -36,7 +41,7 @@
             :tab-index="1"
             :tag-color-default="'lightseagreen'"
             tag-list-label="Tags"
-            placeholder="Select an option"
+            placeholder="Tags"
             @on-tag-added="tagAdded"
             @on-tag-removed="tagRemoved"
           ></vue-tags>
@@ -60,7 +65,7 @@
 <script>
   import Icon from "../Icon";
   export default {
-      name: 'InfoWindow',
+      name: 'AddMarker',
       components: {Icon},
       props: {
           position: {
@@ -112,19 +117,26 @@
               this.form.tags.splice(this.form.tags.indexOf(tag), 1);
           },
 
+          formData() {
+              let form = new FormData();
+              form.append('name', this.form.name);
+              form.append('address', this.form.address);
+              form.append('district', this.form.district);
+              form.append('marker_type_id', this.form.marker_type_id);
+              form.append('lat', this.position.lat);
+              form.append('long', this.position.lng);
+              form.append('tags', JSON.stringify(this.form.tags));
+              return form;
+          },
+
           saveLocation() {
-              this.$axios.$post('/api/markers', this.form, {
-                  headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                  }
-              })
+              this.$axios.$post('/api/markers', this.formData())
                   .then(result => {
-                      console.log(result)
+                      this.$emit('success', result);
                   })
                   .catch(error => {
-                      console.log('error', error)
-                  })
+                      this.$emit('error', error);
+                  });
           }
       },
 
