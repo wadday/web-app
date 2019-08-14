@@ -14,19 +14,19 @@
                 </button>
             </div>
         </div>
-        <info-window v-if="edit_info" :position="current_marker"></info-window>
+        <add-marker v-if="edit_info" :position="current_marker" @close="edit_info = false" @success="markerSuccess"></add-marker>
     </div>
 </template>
 
 <script>
     import debounce from 'lodash.debounce';
-    import InfoWindow from "./map/InfoWindow";
+    import AddMarker from "./map/AddMarker";
     import Icon from "./Icon";
     let map;
     let purple_icon =  'http://maps.google.com/mapfiles/ms/icons/purple-dot.png' ;
     export default {
         name: 'FvmMap',
-        components: {Icon, InfoWindow},
+        components: {Icon, AddMarker},
         props: {
             latitude: {
                 type: Number,
@@ -166,7 +166,7 @@
                 }
             },
             getMarkerId(lat, lng) {
-              return lat+'_'+lng;
+              return 'new_'+lat+'_'+lng;
             },
             addLocation(e) {
                 let _this = this;
@@ -191,6 +191,9 @@
                     _this.edit_info = true;
                 });
                 this.$emit('pin-dropped')
+            },
+            markerSuccess() {
+
             },
             initMapTypeControl() {
                 let mapTypeControlDiv = document.getElementById('map-type-control');
