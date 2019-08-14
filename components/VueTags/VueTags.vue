@@ -338,10 +338,10 @@
     justify-content: flex-start;
     align-items: flex-start;
     min-height: calc(28px);
-    padding: 7px 7px 3px 7px;
+    padding: 10px 7px 8px 7px;
     background-color: #fff;
     border-radius: 3px;
-    border: 1px solid #cfcfcf;
+    border: 1px solid #e2e8f0;
     position: relative;
     z-index: 1;
   }
