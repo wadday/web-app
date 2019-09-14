@@ -103,6 +103,7 @@
                     lat: null,
                     lng: null
                 },
+                wadday: null,
                 markers: [],
                 center: {
                     lat: this.latitude,
@@ -189,6 +190,10 @@
                 marker.addListener('click', function() {
                     // _this.infoWindow(marker);
                     _this.edit_info = true;
+                });
+                google.maps.event.addListener(marker, 'dragend', function() {
+                    _this.current_marker.lat = marker.getPosition().lat();
+                    _this.current_marker.lng = marker.getPosition().lng();
                 });
                 this.$emit('pin-dropped')
             },
@@ -281,7 +286,11 @@
 
                 google.maps.event.addListener(map, 'click', function(e) {
                     if (self.editing && self.zoomLevel >= 18) {
-                        self.addLocation(e);
+                        if (!self.current_marker.lat) {
+                            self.addLocation(e);
+                        } else {
+                            alert('Unsaved Mark exist')
+                        }
                     } else {
                         // alert('Zoom in')
                         // self.$toast.open('Zoom in')
