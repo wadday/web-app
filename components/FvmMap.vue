@@ -15,6 +15,7 @@
             </div>
         </div>
         <add-marker v-if="edit_info" :position="current_marker" @close="edit_info = false" @success="markerSuccess"></add-marker>
+        <dialog-component :show="dialog" :message="dialogMessage"></dialog-component>
     </div>
 </template>
 
@@ -22,11 +23,12 @@
     import debounce from 'lodash.debounce';
     import AddMarker from "./map/AddMarker";
     import Icon from "./Icon";
+    import Dialog from "./Dialog";
     let map;
     let purple_icon =  'http://maps.google.com/mapfiles/ms/icons/purple-dot.png' ;
     export default {
         name: 'FvmMap',
-        components: {Icon, AddMarker},
+        components: {'dialog-component': Dialog, Icon, AddMarker},
         props: {
             latitude: {
                 type: Number,
@@ -98,6 +100,8 @@
 
         data() {
             return {
+                dialog: false,
+                dialogMessage: null,
                 edit_info: false,
                 current_marker: {
                     lat: null,
@@ -289,7 +293,9 @@
                         if (!self.current_marker.lat) {
                             self.addLocation(e);
                         } else {
-                            alert('Unsaved Mark exist')
+                            self.dialogMessage = 'Unsaved Mark exist'
+                            self.dialog = true
+                            // alert('Unsaved Mark exist')
                         }
                     } else {
                         // alert('Zoom in')
